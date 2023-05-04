@@ -3,20 +3,20 @@ const app = express();
 const cors = require("cors");
 const mysql = require("mysql");
 const dotenv = require("dotenv");
-const authController = require("../api/controllers/auth.controller");
-const homeController = require("../api/controllers/home.controller");
-const memberController = require("../api/controllers/member.controller");
-const classController = require("../api/controllers/class.controller");
+const authController = require("./controllers/auth.controller");
+const homeController = require("./controllers/home.controller");
+const memberController = require("./controllers/member.controller");
+const classController = require("./controllers/class.controller");
 
-const { verifySignUp, authJwt } = require("../api/middleware");
-const { verifySignIn } = require("../api/middleware");
-const opt_controller = require("../api/controllers/options.controller");
+const { verifySignUp, authJwt } = require("./middleware");
+const { verifySignIn } = require("./middleware");
+const opt_controller = require("./controllers/options.controller");
 
 app.use(cors());
 app.use(express.json());
 
 dotenv.config({ path: "./.env" });
-app.get("/hello", function (req, res) {
+app.get("/health", function (req, res) {
   console.log(authJwt.isAdmin);
   res.send({ name: "maverick" });
 });
@@ -27,13 +27,6 @@ const db = mysql.createConnection({
   password: process.env.password,
   database: process.env.database,
 });
-
-// const db = mysql.createConnection({
-//   host: process.env.host,
-//   user: process.env.user,
-//   password: process.env.password,
-//   database: process.env.database,
-// })
 db.connect((err) => {
   if (err) {
     console.log(err);
@@ -128,8 +121,8 @@ app.post(
   memberController.logActivity
 );
 
-app.listen(3000, () => {
-  console.log("app listening on port 3000");
+app.listen(8080, () => {
+  console.log("app listening on port 8080");
 });
 
 module.exports = app;
